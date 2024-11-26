@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,7 +26,7 @@ public class ItemDTO {
 
     private MemberDTO memberDTO;
 
-    private LocalDate regDate;
+    private LocalDateTime regTime;
 
-    private LocalDate updateDate;
+    private LocalDateTime updateTime;
 }

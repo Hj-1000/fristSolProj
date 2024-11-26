@@ -28,7 +28,7 @@ public class MemberDTO {
     private String name;
     @NotBlank(message = "ID는 빈칸일 수 없습니다.")
     @Size(min = 2, max = 20, message = "ID는 2~50글자 사이입니다.")
-    private String id;
+    private String userID;
     @NotBlank(message = "비밀번호는 빈칸일 수 없습니다.")
     @Size(min = 8, message = "비밀번호는 최소 8, 최대 16자입니다.")
     private String password;

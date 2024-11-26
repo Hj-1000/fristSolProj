@@ -29,12 +29,12 @@ public class MemberService implements UserDetailsService {
 
     //이건 로그인
     @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userID) throws UsernameNotFoundException {
 
-        Member member = memberRepository.findByUserID(id);
+        Member member = memberRepository.findByUserID(userID);
 
         if (member == null){
-            throw new UsernameNotFoundException(id);
+            throw new UsernameNotFoundException(userID);
         }
 
         return User.builder()
@@ -47,7 +47,7 @@ public class MemberService implements UserDetailsService {
     // 회원가입
     public Member saveMember(MemberDTO memberDTO){
 
-        validDuplocateMember(memberDTO.getEmail(), memberDTO.getId());
+        validDuplocateMember(memberDTO.getEmail(), memberDTO.getUserID());
 
         log.info("너는 회원가입을 했을것이여" + memberDTO);
         // 컨트롤러에서 받은 MemberDTO를 member entity 로 변경
@@ -70,12 +70,12 @@ public class MemberService implements UserDetailsService {
     // 회원가입 메소드에 써도 되지만 받는 파라미터인 이메일과 아이디
     // 둘 중 하나라도 이미 존재하는지를 확인해야한다.
 
-    private void validDuplocateMember(String email, String id){
+    private void validDuplocateMember(String email, String userID){
         System.out.println(email);
-        System.out.println(id);
+        System.out.println(userID);
 
         Member memberID =
-                memberRepository.findByUserID(id);
+                memberRepository.findByUserID(userID);
 
         Member memberEmail =
                 memberRepository.findByEmail(email);
