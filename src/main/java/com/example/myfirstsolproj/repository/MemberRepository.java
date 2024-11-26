@@ -9,5 +9,5 @@ public interface MemberRepository extends JpaRepository<Member , Long> {
     public Member findByEmail(String email);
 
     // findById 는 비밀번호 찾을 때 사용
-    public Member findById(String id);
+    public Member findByUserID(String id);
 }

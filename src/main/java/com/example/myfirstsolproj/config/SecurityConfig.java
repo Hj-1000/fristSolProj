@@ -26,7 +26,7 @@ public class SecurityConfig {
                 // 권한 페이지 접속권한
                 .authorizeHttpRequests(
                         authorization -> authorization
-                                .requestMatchers("/members/login/**").permitAll()//로그인페이지는 누구나 접속이 가능한 권한
+                                .requestMatchers("/member/login/**").permitAll()//로그인페이지는 누구나 접속이 가능한 권한
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/board/register").authenticated() // 로그인 한 사람만 접속 가능
                                 .requestMatchers("/user/list").hasRole("ADMIN")
@@ -38,18 +38,18 @@ public class SecurityConfig {
                 .csrf( csrf -> csrf.disable())
                 // 로그인
                 .formLogin(
-                        formLogin ->formLogin.loginPage("/members/login")      //기본 로그인 페이지 지정
+                        formLogin ->formLogin.loginPage("/member/login")      //기본 로그인 페이지 지정
                                 .defaultSuccessUrl("/")                     //로그인이 성공했다면
-                                .usernameParameter("email")                      //로그인 <input name="email">
+                                .usernameParameter("userID")                      //로그인 <input name="email">
                         //컨트롤러로 보낼때~~
                 )
                 // 로그아웃
                 .logout(
                         logout -> logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))           //로그아웃 a태그라 생각
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))           //로그아웃 a태그라 생각
                                 //<a href="/user/logout">잘가~~</a>
                                 .invalidateHttpSession(true)                    //세션초기화
-                                .logoutSuccessUrl("/members/login")                          //localhost:8090 으로 간다.
+                                .logoutSuccessUrl("/member/login")                          //localhost:8090 으로 간다.
                         //dns주소일경우 www.naver.com 까지 로 간다.
                         //컨트롤러에서 만들어줄껄?
 

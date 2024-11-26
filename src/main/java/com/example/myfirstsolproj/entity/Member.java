@@ -1,6 +1,6 @@
 package com.example.myfirstsolproj.entity;
 
-import com.example.myfirstsolproj.content.Role;
+import com.example.myfirstsolproj.constant.Role;
 
 import jakarta.persistence.*;
 
@@ -27,8 +27,8 @@ public class Member{
     @Column(length = 10, nullable = false)
     private String name;
     @Column(length = 20, nullable = false, unique = true)
-    private String id;
-    @Column(length = 16, nullable = false)
+    private String userID;
+    @Column(nullable = false)
     private String password;
 
     private String address;
