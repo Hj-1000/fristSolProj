@@ -52,8 +52,14 @@ public class MemberController {
     }
 
     @GetMapping("/login")
-    public String login(){
+    public String loginGet(){
 
         return "member/login";
+    }
+
+    @PostMapping("/login")
+    public String loginPost(){
+
+        return "item/register";
     }
 }

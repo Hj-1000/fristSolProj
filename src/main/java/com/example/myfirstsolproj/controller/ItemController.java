@@ -63,7 +63,7 @@ public class ItemController {
             log.info("상품등록이 되었습니다!!");
 
             // todo 나중에 등록한 글을 바로 볼 수 있도록 return을
-            //  return "redirect:/admin/item/read?id="+savedItemIno; 로 바꾸기
+            //  return "redirect:/admin/item/read?ino="+savedItemIno; 로 바꾸기
             return "redirect:/admin/item/list";
         }catch (Exception e){
             e.printStackTrace();

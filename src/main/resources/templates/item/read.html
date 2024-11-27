@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}"
 >
 <head>
     <meta charset="UTF-8">
@@ -8,7 +9,7 @@
 </head>
 <body>
 
-<th:block>
+<th:block layout:fragment="content">
     <form action="/admin/item/register" method="post" th:object="${itemDTO}">
         <div class="row">
             <div class="col-8 offset-2">

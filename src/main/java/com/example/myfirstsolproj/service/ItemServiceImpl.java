@@ -33,31 +33,15 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public Long itemRegister(ItemDTO itemDTO, String userID) {
 
-        log.info(userID);
-        log.info(userID);
-        log.info(userID);
-        log.info(userID);
-        log.info(userID);
+
         Member member =
         memberRepository.findByUserID(userID);
 
         log.info(member);
-        log.info(member);
-        log.info(member);
-        log.info(member);
-        log.info(member);
-        log.info(member);
+
         Item item =
         modelMapper.map(itemDTO, Item.class);
 
-        if(member == null){
-            log.info("못찾아와");
-            log.info("못찾아와");
-            log.info("못찾아와");
-            log.info("못찾아와");
-            log.info("못찾아와");
-            return  null;
-        }
 
         item.setMember(member);
 

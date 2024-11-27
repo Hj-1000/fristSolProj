@@ -1,32 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}"
 >
 <head>
     <meta charset="UTF-8">
     <title>로그인</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery를 사용하기 위한 스크립트 추가 -->
 </head>
 <body>
-<th:block>
-    <div class="row mt-5" >
+<th:block layout:fragment="content">
+    <div class="row mt-5">
         <div class="col-8 offset-2">
             <h1>로그인</h1>
 
             <div th:if="${param.error}">
-                <h1 >
-                    email 또는 비밀번호를 확인해주세요
-                </h1>
-
+                <h1>email 또는 비밀번호를 확인해주세요</h1>
             </div>
+
             <script th:inline="javascript">
-                let errorMsg = [[${param.error}]]
-                if(errorMsg) {
-                    alert("이메일 또는 비밀번호를 확인해주세요")
+                let errorMsg = [[${param.error}]];
+                if (errorMsg) {
+                    alert("이메일 또는 비밀번호를 확인해주세요");
                 }
-
             </script>
-            <form class="row g-3 formA" action="/member/login" method="post">
 
+            <form class="row g-3 formA" action="/member/login" method="post">
                 <div class="col-md-6">
                     <label for="userID" class="form-label">ID</label>
                     <input type="text" name="userID" class="form-control" id="userID" placeholder="아이디를 입력해주세요" required>
@@ -37,33 +36,30 @@
                     <input type="password" name="password" class="form-control" id="password" placeholder="비밀번호를 입력해주세요" required>
                 </div>
 
-
-
                 <div class="col-12 text-center">
+                    <!-- 로그인 버튼: submit 타입 유지, 클릭 시 자바스크립트로 동작 처리 -->
                     <button type="submit" class="btn btn-primary loginBtn">로그인</button>
                     <button type="button" class="btn btn-primary signupBtn">회원가입</button>
                 </div>
-
             </form>
 
         </div>
-
     </div>
-<script>
-    $(".loginBtn").on("click",function () {
-        location.href = "/admin/item/register"
-    })
 
-    $(".signupBtn").on("click", function () {
-        location.href = "/member/signup2"
-    })
+    <script th:inline="javascript">
+        // 로그인 버튼 클릭 시 페이지 이동 (폼 제출 전 자바스크립트로 처리)
+        $(".loginBtn").on("click", function () {
 
-</script>
+            location.href = "/admin/item/register";  // 로그인 후 이동할 URL
+        });
+
+        // 회원가입 버튼 클릭 시 페이지 이동
+        $(".signupBtn").on("click", function () {
+            location.href = "/member/signup2";  // 회원가입 페이지로 이동
+        });
+    </script>
 
 </th:block>
-
-
-
 
 </body>
 </html>

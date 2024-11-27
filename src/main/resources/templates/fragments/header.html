@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:fragment="header">
+
+    <header>
+        <div class="header-container">
+            <!-- 로그인/회원가입 버튼 -->
+            <div class="login-signup">
+                <button class="login-btn">로그인</button>
+                <button class="signup-btn">회원가입</button>
+            </div>
+        </div>
+
+        <!-- 네비게이션 바 -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="#graphic">그래픽</a></li>
+                <li><a href="#programming">프로그래밍</a></li>
+                <li><a href="#illustration">일러스트</a></li>
+                <li><a href="#audio">녹음</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+
+</th:block>
+
+
+</body>
+</html>
