@@ -1,5 +1,6 @@
 package com.example.myfirstsolproj.dto;
 
+import com.example.myfirstsolproj.constant.ItemSellStatus;
 import com.example.myfirstsolproj.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 public class ItemDTO {
 
     private Long ino;   //상품코드
+//    private Long member_id;  // 해당 작성자 Member pk의 컬럼명
 
     private String itemNm;  // 상품명
 
@@ -24,9 +26,16 @@ public class ItemDTO {
 
     private String itemDetail; // 상품 상세설명
 
+    private ItemSellStatus itemSellStatus;
+
     private MemberDTO memberDTO;
 
     private LocalDateTime regTime;
 
     private LocalDateTime updateTime;
+
+//    public ItemDTO setMemberDTO(MemberDTO memberDTO){
+//        this.memberDTO = memberDTO;
+//        return this;
+//    }
 }
