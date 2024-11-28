@@ -53,13 +53,20 @@
         </div>
 
         <div class="col-12 text-center">
-            <button type="submit" class="btn btn-primary formbtn">Sign in</button>
-            <button type="submit" class="btn btn-primary">로그인</button>
+            <button type="submit" class="btn btn-primary formbtn">회원가입</button>
+            <button type="button" class="btn btn-primary toLoginBtn">로그인</button>
         </div>
 
 
     </form>
+    <script th:inline="javascript">
+        $(".toLoginBtn").on("click", function () {
 
+            location.href = "/member/login";  // 로그인 후 이동할 URL
+        });
+
+
+    </script>
 
 </th:block>
 

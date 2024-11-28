@@ -62,7 +62,7 @@ public class MemberService implements UserDetailsService {
         member =
         memberRepository.save(member);
 
-        log.info("여기서 저장하는거지" + member);
+        log.info("이 사람 가입하는거지?" + member);
         return member;
     }
 
@@ -70,7 +70,7 @@ public class MemberService implements UserDetailsService {
     // 회원가입 메소드에 써도 되지만 받는 파라미터인 이메일과 아이디
     // 둘 중 하나라도 이미 존재하는지를 확인해야한다.
 
-    private void validDuplocateMember(String email, String userID){
+    public void validDuplocateMember(String email, String userID){
         System.out.println(email);
         System.out.println(userID);
 
@@ -89,6 +89,20 @@ public class MemberService implements UserDetailsService {
 
         log.info("회원가입을 성공하였습니다.");
 
+    }
+
+    public String findMemberName(String userID){
+
+        Member member =
+        memberRepository.findByUserID(userID);
+
+        MemberDTO memberDTO =
+        modelMapper.map(member , MemberDTO.class);
+
+        userID =
+        memberDTO.getName();
+
+        return userID;
     }
 
 }

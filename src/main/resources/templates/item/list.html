@@ -36,13 +36,13 @@
                     <th:block  th:each="list: ${pageResponseDTO.dtoList}">
                         <tbody>
                         <tr class="align-middle">
-                            <td  th:text="${list.id}"></td>
+                            <td  th:text="${list.ino}"></td>
                             <td >
                                 <a th:href="@{/admin/item/read(ino=${list.ino})}">
                                     [[${list.itemNm}]]
                                 </a>
                             </td>
-                            <td th:text="${list.createBy}"></td>
+                            <td th:text="${list.memberDTO.name}"></td>
                             <td th:text="${#temporals.format(list.regTime, 'yyyy-MM-dd')}"></td>
                             <td th:text="${#temporals.format(list.updateTime, 'yyyy-MM-dd')}"></td>
                             <td>
@@ -60,7 +60,7 @@
 
 
             </th:block>
-            <th:block th:if="${#lists.isEmpty(pageResponseDTO.dtoList)}" >
+            <th:block th:if="${#lists.isEmpty(pageResponseDTO.dtoList)}">
 
                 <h1>게시물이 없습니다.</h1>
 
@@ -75,14 +75,12 @@
                     <ul class="pagination">
                         <!--이전으로-->
                         <th:block th:if="${pageResponseDTO.prev}">
-                            <li class="page-item"><a class="page-link" th:href="|@{'/admin/item/list?page=' +${pageResponseDTO.start-1}}">Previous</a></li>
+                            <li class="page-item"><a class="page-link" th:href="|@{'/admin/item/list?page=' +${pageResponseDTO.start -1}}|">Previous</a></li>
 
                         </th:block>
-
                         <!--반복되는 페이지들 1~10 -->
                         <th:block th:each="num: ${#numbers.sequence(pageResponseDTO.start,pageResponseDTO.end)}">
                             <li class="page-item"><a class="page-link" th:href="|@{'/admin/item/list?page=' +${num}}|">[[${num}]]</a></li>
-
                         </th:block>
 
                         <!--다음으로-->
@@ -95,6 +93,22 @@
             </div>
         </div>
     </th:block>
+    <script th:inline="javascript">
+
+        $(document).ready(function () {
+
+            $(".updateMoveBtn").on("click", function () {
+                location.href = "/admin/item/update?id=" + $(this).val();
+            })
+
+        })
+
+
+
+        $(".newproduct").on("click", function () {
+            location.href = "/admin/item/new";
+        })
+    </script>
 </th:block>
 
 </body>

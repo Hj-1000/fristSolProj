@@ -87,6 +87,10 @@ public class ItemServiceImpl implements ItemService{
     // 아이템 올린사람(해당 전문가가 올린 아이템 리스트만 보기)
     @Override
     public PageResponseDTO<ItemDTO> itemList(PageRequestDTO pageRequestDTO, String userID) {
+
+        //아이템 작성자도 찾으려면 작성자 이름이 필요한데 이거 set 할 필요가 있었음
+        // html에서 넘겨주려면 해당 값을 가져와야함
+
         Pageable pageable = pageRequestDTO.getPageable("ino");
         Page<Item> items = itemRepository.getExpertItemPage(pageRequestDTO,pageable,userID);
 

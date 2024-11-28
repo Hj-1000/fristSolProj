@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRepository extends JpaRepository<Member , Long> {
 
-    // findByEmail 로그인 때 사용
+    // findByEmail 는 아이디 찾을 때 사용
     public Member findByEmail(String email);
 
-    // findById 는 비밀번호 찾을 때 사용
+    // findByUserId 여러군대에 사용함
     public Member findByUserID(String id);
 }

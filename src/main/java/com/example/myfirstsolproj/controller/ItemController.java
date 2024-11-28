@@ -26,6 +26,7 @@ import java.security.Principal;
 public class ItemController {
 
     private final ItemService itemService;
+    private final MemberService memberService;
 
     @GetMapping("/admin/item/register")
     public String itemRegisterGet(Model model, Principal principal){
@@ -92,6 +93,9 @@ public class ItemController {
     // 글쓴사람이 자기글만 볼 수 있는 리스트
     @GetMapping("/admin/item/list")
     public String adminList(PageRequestDTO pageRequestDTO, Model model, Principal principal){
+
+
+
 
         PageResponseDTO<ItemDTO> pageResponseDTO =
                 itemService.itemList(pageRequestDTO,principal.getName());
