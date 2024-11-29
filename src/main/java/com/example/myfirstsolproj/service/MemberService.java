@@ -44,6 +44,22 @@ public class MemberService implements UserDetailsService {
                 .build();
     }
 
+    // 이건 아이디 찾기
+//    public UserDetails findUserIDByEmail(String email) throws UsernameNotFoundException {
+//
+//        Member member = memberRepository.findByEmail(email);
+//
+//        if (member == null){
+//            throw new UsernameNotFoundException(email);
+//        }
+//
+//        return User.builder()
+//                .username(member.getEmail())   // 세션에 이메일
+//                .password(member.getPassword()) // 로그인시 입력한 비밀번호와 비교할 값
+//                .roles(member.getRole().name())
+//                .build();
+//    }
+
     // 회원가입
     public Member saveMember(MemberDTO memberDTO){
 

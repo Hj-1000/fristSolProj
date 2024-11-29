@@ -119,7 +119,8 @@ public class ItemServiceImpl implements ItemService{
         // 가져온거 값 set
         item.setItemNm(itemDTO.getItemNm());
         item.setPrice(itemDTO.getPrice());
-        item.setItemDetail(item.getItemDetail());
+        item.setItemDetail(itemDTO.getItemDetail());
+        item.setItemSellStatus(itemDTO.getItemSellStatus());
 
         itemDTO =
         modelMapper.map(item, ItemDTO.class);

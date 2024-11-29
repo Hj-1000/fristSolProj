@@ -60,34 +60,5 @@ public class MemberController {
         return "member/login";
     }
 
-    @PostMapping("/login")
-    public String loginPost(@Valid BindingResult bindingResult, Principal principal){
 
-        String userID = principal.getName();
-
-        if (bindingResult.hasErrors()){
-            log.info("유효성 검사에 실패함");
-            log.info(bindingResult.getAllErrors()); // 확인된 모든 에러 콘솔창에 출력
-
-            return "member/login";
-        }
-
-        try {
-            memberService.loadUserByUsername(userID);
-
-            log.info("로그인에 성공하였습니다");
-            log.info("현재 로그인 한 사람 : " + userID);
-
-            return "/item/register";
-        }catch (UsernameNotFoundException e){
-            log.info("유저정보를 확인할 수 없습니다");
-
-            return "member/login";
-        }
-
-
-
-
-
-    }
 }

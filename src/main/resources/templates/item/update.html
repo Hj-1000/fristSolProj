@@ -10,12 +10,14 @@
 <body>
 
 <th:block layout:fragment="content">
-    <form action="/admin/item/register" method="post" th:object="${itemDTO}">
+    <form action="/admin/item/update" method="post" th:object="${itemDTO}">
         <div class="row">
             <div class="col-8 offset-2">
                 <div class="row">
                     <div class="col-12">
                         <div class="mb-3">
+                            <input type="hidden" th:field="*{ino}">
+                            <input type="hidden" th:field="*{memberDTO.mno}">
                             <label for="itemNm" class="form-label">상품명</label>
                             <input type="text" class="form-control" th:field="*{itemNm}"  required id="itemNm" >
                             <p th:if="${#fields.hasErrors('itemNm')}" th:errors="*{itemNm}" class="fieldError"></p>
@@ -34,7 +36,7 @@
                     <div class="col-12">
                         <div class="mb-3">
                             <label for="itemDetail" class="form-label">상세설명 </label>
-                            <textarea class="form-control" th:field="*{itemDetail}" id="itemDetail" rows="3"></textarea>
+                            <textarea th:type="text" class="form-control" th:field="*{itemDetail}" id="itemDetail" rows="3"></textarea>
                             <p th:if="${#fields.hasErrors('itemDetail')}" th:errors="*{itemDetail}" class="fieldError"></p>
 
                         </div>
@@ -51,10 +53,14 @@
                     <!--저장버튼 목록버튼-->
                     <div class="col-12">
                         <button class="btn btn-dark">저장</button>
-                        <button type="button" class="btn btn-dark listbtn">목록</button>
+                        <button type="button" class="btn btn-dark toListBtn">목록</button>
+                        <button type="button" class="btn btn-danger toDelBtn">목록</button>
                         <script>
-                            $(".listbtn").on("click", function () {
+                            $(".toListBtn").on("click", function () {
                                 location.href = "/admin/item/list"
+                            })
+                            $(".toDelBtn").on("click", function () {
+                                location.href = "/admin/item/del"
                             })
                         </script>
                     </div>

@@ -65,7 +65,7 @@ public class ItemController {
 
             // todo 나중에 등록한 글을 바로 볼 수 있도록 return을
             //  return "redirect:/admin/item/read?ino="+savedItemIno; 로 바꾸기
-            return "redirect:/admin/item/list";
+            return "redirect:/admin/item/read?ino=" + savedItemIno;
         }catch (Exception e){
             e.printStackTrace();
             log.info("업로드에 문제가 발생했습니다.");
@@ -104,5 +104,50 @@ public class ItemController {
 
         return "item/list";
 
+    }
+
+    @GetMapping("admin/item/update")
+    public String adminUpdateGet(Long ino, PageRequestDTO pageRequestDTO,
+                                 Model model, Principal principal){
+
+
+        ItemDTO itemDTO=
+        itemService.itemExpertRead(ino, principal.getName());
+        if (itemDTO != null){
+            model.addAttribute("itemDTO", itemDTO);
+            return "item/update";
+        }else{
+            return "redirect:/admin/item/list";
+        }
+
+
+
+    }
+
+    @PostMapping("admin/item/update")
+    public String adminUpdatePost(@Valid ItemDTO itemDTO, BindingResult bindingResult){
+
+        // if (만약 유효성검사에 이상이 있으면) if 아래 페이지로 보내라
+        if (bindingResult.hasErrors()){
+            log.info("유효성검사 에러");
+            log.info(bindingResult.getAllErrors());
+            return "/item/update";
+        }
+        itemDTO=
+        itemService.itemUpdate(itemDTO, itemDTO.getIno());
+
+
+        return "redirect:/admin/item/read?ino=" + itemDTO.getIno();
+    }
+
+    @PostMapping("/admin/item/del")
+    public String adminDel(Long ino){
+        log.info("삭제할 아이템의 번호 "+ino);
+
+        itemService.itemDel(ino);
+
+        log.info("삭제에 성공함" + ino + " 널이쥬?");
+
+        return "redirect:/admin/item/list";
     }
 }

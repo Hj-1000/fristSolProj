@@ -47,27 +47,32 @@
                     </div>
 
                     <div class="col-12">
-                        <button type="button" class="btn btn-dark updateBtn">수정</button>
-                        <button type="button" class="btn btn-dark listBtn">목록</button>
+                        <button type="button" class="btn btn-dark toUpdateBtn" th:value="${itemDTO.ino}">수정</button>
+                        <button type="button" class="btn btn-dark toListBtn">목록</button>
                     </div>
                 </div>
+                <script th:inline="javascript">
+                    let itemIno = [[${itemDTO.ino}]]
+
+
+                    $(document).ready(function () {
+                        $(".toListBtn").on("click", function () {
+                            location.href = "/admin/item/list"
+                        })
+
+
+                        $(".toUpdateBtn").on("click", function () {
+                            location.href = "/admin/item/update?ino=" + $(this).val();
+                        })
+                    })
+
+                </script>
 
             </div>
         </div>
     </form>
 </th:block>
 
-<th:block>
-    <script th:inline="javascript">
-        let itemIno = [[${itemDTO.ino}]]
-        $(document).ready(function () {
-            $(".listBtn").on("click", function () {
-                location.href = "/admin/item/list"
-            })
-        })
-
-    </script>
-</th:block>
 
 </body>
 </html>

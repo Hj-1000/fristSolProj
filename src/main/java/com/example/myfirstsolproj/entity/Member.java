@@ -21,7 +21,6 @@ public class Member{
     @Column(name = "member_id")
     private Long mno;
 
-
     @Column(length = 50, nullable = false, unique = true)
     private String email;
     @Column(length = 10, nullable = false)

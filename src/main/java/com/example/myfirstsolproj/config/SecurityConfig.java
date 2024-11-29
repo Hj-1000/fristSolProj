@@ -38,7 +38,7 @@ public class SecurityConfig {
                 // 로그인
                 .formLogin(
                         formLogin ->formLogin.loginPage("/member/login")      //기본 로그인 페이지 지정
-                                .defaultSuccessUrl("/")                     //로그인이 성공했다면
+                                .defaultSuccessUrl("/admin/item/list")                     //로그인이 성공했다면
                                 .usernameParameter("userID")                      //로그인 <input name="userID">
                         //컨트롤러로 보낼때~~
                 )
