@@ -1,6 +1,7 @@
 package com.example.myfirstsolproj.service;
 
 import com.example.myfirstsolproj.dto.ItemDTO;
+import com.example.myfirstsolproj.dto.MemberDTO;
 import com.example.myfirstsolproj.dto.PageRequestDTO;
 import com.example.myfirstsolproj.dto.PageResponseDTO;
 import com.example.myfirstsolproj.entity.Item;
@@ -95,7 +96,7 @@ public class ItemServiceImpl implements ItemService{
         Page<Item> items = itemRepository.getExpertItemPage(pageRequestDTO,pageable,userID);
 
         List<ItemDTO> itemDTOList =
-        items.getContent().stream().map(item -> modelMapper.map(item, ItemDTO.class))
+        items.getContent().stream().map(item -> modelMapper.map(item, ItemDTO.class).setMemberDTO(modelMapper.map(item.getMember(), MemberDTO.class)))
                 .collect(Collectors.toList());
 
         PageResponseDTO<ItemDTO> itemDTOPageResponseDTO
