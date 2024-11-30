@@ -4,6 +4,7 @@ import com.example.myfirstsolproj.constant.Role;
 import com.example.myfirstsolproj.dto.MemberDTO;
 import com.example.myfirstsolproj.entity.Member;
 import com.example.myfirstsolproj.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
@@ -106,19 +107,19 @@ public class MemberService implements UserDetailsService {
         log.info("회원가입을 성공하였습니다.");
 
     }
-
-    public String findMemberName(String userID){
+    public MemberDTO readMember(Long mno){
 
         Member member =
-        memberRepository.findByUserID(userID);
+        memberRepository.findById(mno).orElseThrow(EntityNotFoundException::new);
 
         MemberDTO memberDTO =
         modelMapper.map(member , MemberDTO.class);
 
-        userID =
-        memberDTO.getName();
-
-        return userID;
+        return memberDTO;
     }
+
+
+
+
 
 }

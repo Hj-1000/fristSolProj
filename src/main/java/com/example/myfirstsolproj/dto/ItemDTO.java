@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class ItemDTO {
 
     private Long ino;   //상품코드
-    private Long member_id;  // 해당 작성자 Member pk의 컬럼명
+    private Long mno;  // 해당 작성자 Member pk의 컬럼명
 
     private String itemNm;  // 상품명
 

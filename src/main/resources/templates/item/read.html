@@ -51,26 +51,78 @@
                         <button type="button" class="btn btn-dark toListBtn">목록</button>
                     </div>
                 </div>
-                <script th:inline="javascript">
-                    let itemIno = [[${itemDTO.ino}]]
 
-
-                    $(document).ready(function () {
-                        $(".toListBtn").on("click", function () {
-                            location.href = "/admin/item/list"
-                        })
-
-
-                        $(".toUpdateBtn").on("click", function () {
-                            location.href = "/admin/item/update?ino=" + $(this).val();
-                        })
-                    })
-
-                </script>
 
             </div>
         </div>
     </form>
+
+    <!--여기부터 댓글-->
+    <div class="mt-2 p-3 bg-body rounded shadow-sm">
+        <h2 class="fs-6">댓글 작성</h2>
+        <input class="form-control replyText" type="text">
+        <div class="form-text">존중과 배려하는 마음으로 건강한 댓글 문화를 함께 만들어가요.</div>
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-primary replyRegisterBtn">등록</button>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        let ino = [[${itemDTO.ino}]]
+        let mno = [[${mno}]]
+
+        let replyRegisterBtn = $(".replyRegisterBtn") // 댓글등록 버튼
+        let replyText = $(".replyText") // 댓글 내용
+        let replyDTO = {
+            rno : "",
+            ino : "",
+            member_id : "",
+            replyContent : ""
+        }
+
+        $(document).ready(function () {
+            $(".toListBtn").on("click", function () {
+                location.href = "/admin/item/list"
+            })
+
+
+            $(".toUpdateBtn").on("click", function () {
+                location.href = "/admin/item/update?ino=" + $(this).val();
+            })
+
+            replyRegisterBtn.on("click", function (){
+
+                replyDTO.rno = "";
+                replyDTO.ino = ino;
+                replyDTO.mno = mno;
+                replyDTO.replyContent = replyText.val();
+
+                replySave(replyDTO);
+
+            })
+
+            //함수
+            function replySave(replyDTO){
+
+                $.ajax({
+                    url : "/reply/register" ,
+                    data : replyDTO ,
+                    type : "post",
+                    success : function (result) {
+                        alert(result)   // 성공후 또는 실패 메시지
+                    },
+                    error : function (error) {
+                        console.log(error)
+                        console.log(error.status)
+                        console.log(error.responseText)
+                    }
+                })
+            }
+
+        })
+
+    </script>
+
 </th:block>
 
 

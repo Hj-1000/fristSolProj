@@ -17,7 +17,7 @@
                     <div class="col-12">
                         <div class="mb-3">
                             <input type="hidden" th:field="*{ino}">
-                            <input type="hidden" th:field="*{memberDTO.mno}">
+                            <input type="hidden" th:field="*{mno}">
                             <label for="itemNm" class="form-label">상품명</label>
                             <input type="text" class="form-control" th:field="*{itemNm}"  required id="itemNm" >
                             <p th:if="${#fields.hasErrors('itemNm')}" th:errors="*{itemNm}" class="fieldError"></p>

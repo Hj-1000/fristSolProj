@@ -74,6 +74,7 @@ public class ItemController {
         }
     }
 
+    //내가 쓴 글
     @GetMapping("/admin/item/read")
     public String read(Long ino, Model model, RedirectAttributes redirectAttributes){
 
