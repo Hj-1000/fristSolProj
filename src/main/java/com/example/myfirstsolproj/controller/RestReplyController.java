@@ -56,7 +56,7 @@ public class RestReplyController {
         try {
             replyService.replyRegister(replyDTO, principal.getName());
             log.info("댓글이 저장되었습니다.");
-            model.addAttribute("mno", principal.getName());
+            model.addAttribute("replyDTO", replyDTO);
 
         }catch (EntityNotFoundException e){
 

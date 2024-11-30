@@ -65,6 +65,7 @@
         <div class="d-flex justify-content-end">
             <button class="btn btn-primary replyRegisterBtn">등록</button>
         </div>
+        <form class="formA"></form>
     </div>
 
     <script th:inline="javascript">
@@ -92,7 +93,8 @@
 
             replyRegisterBtn.on("click", function (){
 
-                replyDTO.rno = "";
+
+                replyDTO.rno =$(this).val()
                 replyDTO.ino = ino;
                 replyDTO.mno = mno;
                 replyDTO.replyContent = replyText.val();

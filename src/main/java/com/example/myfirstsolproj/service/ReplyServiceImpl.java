@@ -35,10 +35,11 @@ public class ReplyServiceImpl implements ReplyService{
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
     private final ModelMapper modelMapper;
-
+    
 
     @Override
     public Reply replyRegister(ReplyDTO replyDTO, String userID) {
+
         log.info("컨트롤러로 들어온 댓글 작성자" + userID);
         log.info("컨트롤러로 들어온 댓글 달린 본문 번호 " + replyDTO.getItemDTO().getIno());
 
