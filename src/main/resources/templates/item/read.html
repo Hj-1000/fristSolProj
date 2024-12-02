@@ -58,26 +58,48 @@
     </form>
 
     <!--여기부터 댓글-->
-    <div class="mt-2 p-3 bg-body rounded shadow-sm">
-        <h2 class="fs-6">댓글 작성</h2>
-        <input class="form-control replyText" type="text">
-        <div class="form-text">존중과 배려하는 마음으로 건강한 댓글 문화를 함께 만들어가요.</div>
-        <div class="d-flex justify-content-end">
-            <button class="btn btn-primary replyRegisterBtn">등록</button>
+    <!--댓글 목록-->
+    <ol class="list-group list-group-numbered replygroup">
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">Subheading</div>
+                Content for list item
+            </div>
+            <span class="badge text-bg-primary rounded-pill">14</span>
+        </li>
+    </ol>
+
+
+    <!--댓글 등록기능-->
+    <div class="card mb-2">
+        <div class="card-header bg-light">
+            <i class="fa fa-comment fa"></i> 댓글창
         </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="form-inline mb-2">
+                        <label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
+                        <input type="text" class="form-control ml-2" placeholder="이곳은 별점이 들어갈 예정" id="replyId">
+                    </div>
+                    <textarea class="form-control replyText" id="replyText" rows="3"></textarea>
+                    <button type="button" class="btn btn-dark mt-3 replyRegisterBtn">등록</button>
+                </li>
+            </ul>
+        </div>
+    </div>
         <form class="formA"></form>
     </div>
 
     <script th:inline="javascript">
         let ino = [[${itemDTO.ino}]]
-        let mno = [[${mno}]]
 
         let replyRegisterBtn = $(".replyRegisterBtn") // 댓글등록 버튼
+        let replygroup = $(".replygroup") // 댓글 목록
         let replyText = $(".replyText") // 댓글 내용
         let replyDTO = {
             rno : "",
             ino : "",
-            member_id : "",
             replyContent : ""
         }
 
@@ -92,11 +114,8 @@
             })
 
             replyRegisterBtn.on("click", function (){
-
-
-                replyDTO.rno =$(this).val()
+                replyDTO.rno = "";
                 replyDTO.ino = ino;
-                replyDTO.mno = mno;
                 replyDTO.replyContent = replyText.val();
 
                 replySave(replyDTO);
@@ -104,6 +123,7 @@
             })
 
             //함수
+            // 댓글 등록 함수
             function replySave(replyDTO){
 
                 $.ajax({
@@ -117,6 +137,47 @@
                         console.log(error)
                         console.log(error.status)
                         console.log(error.responseText)
+                    }
+                })
+            }
+
+            //데이터 (result)를 가져올 때 사용할 calback 함수
+            function listhtmls(result) {
+                console.log(result)
+                let str = "";
+                for (let i = 0; i <result.dtoList.length ; i++){
+                    console.log(result.dtoList[i].memberDTO)
+
+                    str += `<li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">${result.dtoList[i].memberDTO.userID}</div>
+                ${result.dtoList[i].replyContent}
+            </div>
+            <span class="badge text-bg-primary rounded-pill">14</span>
+        </li>`;
+
+
+                }
+                replygroup.append(str)
+            }
+
+            replyListajax(ino, 1, listhtmls);
+
+            // 댓글 목록 함수 ajax로 준비먼저 나중에 목록 불러오기 함수에 쓸거임
+            function replyListajax(ino, pageNum, callback) {
+                console.log("받은 ino" + ino)
+                console.log("받은 page" + pageNum)
+
+                $.ajax({
+                    url: "/reply/list" ,
+                    data: {ino : ino, page : pageNum},
+                    success :function(data){
+                        callback(data)
+                        page = data.page;
+
+                    },
+                    error : function (error) {
+
                     }
                 })
             }

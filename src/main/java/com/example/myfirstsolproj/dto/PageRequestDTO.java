@@ -35,9 +35,6 @@ public class PageRequestDTO {
   private String searchDateType;  // all, 1d, 1w ,1m ,6M
                                   // <select name = "searchdatetype>
 
-  private Long correspondent_num;
-
-  private Long company_num;
 
 
 

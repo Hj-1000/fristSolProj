@@ -41,4 +41,9 @@ public class ReplyDTO {
         this.itemDTO = itemDTO;
         return this;
     }
+
+    public ReplyDTO setMemberDTO(MemberDTO memberDTO) {
+        this.memberDTO = memberDTO;
+        return this;
+    }
 }
