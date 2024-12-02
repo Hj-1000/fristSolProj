@@ -58,7 +58,39 @@
     </form>
 
     <!--여기부터 댓글-->
-    <!--댓글 목록-->
+    <!--모달 시작-->
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5  replyTitle" id="exampleModalLabel">댓글을 수정하시겠습니까?</h1>  <!--댓글등록 댓글수정-->
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+
+
+
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">댓글내용:</label>
+                            <textarea class="form-control replyTxt" id="message-text"></textarea>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary modifyBtn actionBtn">수정</button>
+                    <button type="button" class="btn btn-primary delBtn actionBtn">삭제</button>
+                    <button type="button" class="btn btn-secondary closeBtn actionBtn" data-bs-dismiss="modal">닫기</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--모달 끝-->
+
+     <!--댓글 목록-->
     <ol class="list-group list-group-numbered replygroup">
         <li class="list-group-item d-flex justify-content-between align-items-start">
             <div class="ms-2 me-auto">
@@ -97,6 +129,12 @@
         let replyRegisterBtn = $(".replyRegisterBtn") // 댓글등록 버튼
         let replygroup = $(".replygroup") // 댓글 목록
         let replyText = $(".replyText") // 댓글 내용
+        let replyTitle = $(".replyTitle") // 모달로 띄운 댓글창 상단 제목
+        let replyTxt = $(".replyTxt") // 모달로 띄운 댓글창의 댓글내용\
+        let modifyBtn = $(".modifyBtn") // 모달 댓글창안의 수정버튼
+        let delBtn = $(".delBtn")   // 모달 댓글창안의 삭제 버튼
+        let closeBtn = $(".closeBtn")  // 모달 댓글창안의 닫기 버튼
+        let actionBtn = $(".actionBtn") // 모달창 안의 기능 담당 버튼의 총칭
         let replyDTO = {
             rno : "",
             ino : "",
@@ -104,21 +142,29 @@
         }
 
         $(document).ready(function () {
-            $(".toListBtn").on("click", function () {
+            $(".toListBtn").on("click", function () {   // 글 목록으로 가는 기능(버튼)
                 location.href = "/admin/item/list"
             })
 
 
-            $(".toUpdateBtn").on("click", function () {
+            $(".toUpdateBtn").on("click", function () { // 글 수정으로 가는 기능(버튼)
                 location.href = "/admin/item/update?ino=" + $(this).val();
             })
-
+            // 댓글 등록시키는 버튼이고 누르면 저장메서드 작동함
+            // 얘는 미리 선언해서 쓰게했음
             replyRegisterBtn.on("click", function (){
                 replyDTO.rno = "";
                 replyDTO.ino = ino;
                 replyDTO.replyContent = replyText.val();
 
                 replySave(replyDTO);
+            })
+
+            replygroup.on("click", "li" ,function () {
+                $(".modal").modal("show")
+
+                replyTxt.text("댓글 수정")
+
 
             })
 
@@ -141,7 +187,7 @@
                 })
             }
 
-            //데이터 (result)를 가져올 때 사용할 calback 함수
+            //데이터 (result)를 가져올 때 사용할 callback 함수
             function listhtmls(result) {
                 console.log(result)
                 let str = "";
