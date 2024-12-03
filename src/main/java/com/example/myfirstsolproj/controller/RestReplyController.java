@@ -13,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -30,7 +27,7 @@ public class RestReplyController {
     private final ReplyService replyService;
 
     @PostMapping("/register")
-    public ResponseEntity replyRegister(@Valid ReplyDTO replyDTO, BindingResult bindingResult, Principal principal, Model model){
+    public ResponseEntity register(@Valid ReplyDTO replyDTO, BindingResult bindingResult, Principal principal, Model model){
         log.info("댓글 들어온 값 : " + replyDTO);
 
         if (bindingResult.hasErrors()){
@@ -81,4 +78,35 @@ public class RestReplyController {
         return new ResponseEntity<PageResponseDTO<ReplyDTO>>(responseDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/read/{rno}")
+    public ResponseEntity read(@PathVariable("rno") Long rno){
+
+        log.info("컨트롤러로 불러온 댓글 번호 : " + rno);
+        ReplyDTO replyDTO =replyService.replyRead(rno);
+
+        return new ResponseEntity<ReplyDTO>(replyDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity update(ReplyDTO replyDTO){
+
+        log.info(replyDTO);
+        log.info(replyDTO);
+
+        try {
+            replyService.replyUpdate(replyDTO);
+        }catch (EntityNotFoundException e){
+            return new ResponseEntity<String>("댓글 못 찾음", HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<String>("댓글 수정됨" , HttpStatus.OK);
+    }
+    @PostMapping("/delete/{rno}")
+    public ResponseEntity delete(@PathVariable("rno") Long rno){
+
+        log.info("컨트롤러로 들어온 삭제할 댓글번호 : " + rno);
+        replyService.replyDel(rno);
+
+        return new ResponseEntity<String>("댓글이 삭제되었습니다.", HttpStatus.OK);
+    }
 }

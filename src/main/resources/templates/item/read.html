@@ -64,6 +64,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    <input type="hidden">
                     <h1 class="modal-title fs-5  replyTitle" id="exampleModalLabel">댓글을 수정하시겠습니까?</h1>  <!--댓글등록 댓글수정-->
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -100,6 +101,7 @@
             <span class="badge text-bg-primary rounded-pill">14</span>
         </li>
     </ol>
+    <button class="btn replyAddBtn">더보기</button>
 
 
     <!--댓글 등록기능-->
@@ -123,18 +125,22 @@
         <form class="formA"></form>
     </div>
 
+
     <script th:inline="javascript">
         let ino = [[${itemDTO.ino}]]
+        let rno = $(this).data("num")
 
         let replyRegisterBtn = $(".replyRegisterBtn") // 댓글등록 버튼
         let replygroup = $(".replygroup") // 댓글 목록
-        let replyText = $(".replyText") // 댓글 내용
+        let replyText = $(".replyText") // 모달창 밖 댓글 등록창의 댓글 내용
         let replyTitle = $(".replyTitle") // 모달로 띄운 댓글창 상단 제목
-        let replyTxt = $(".replyTxt") // 모달로 띄운 댓글창의 댓글내용\
+        let replyTxt = $(".replyTxt") // 모달로 띄운 댓글창의 댓글내용
         let modifyBtn = $(".modifyBtn") // 모달 댓글창안의 수정버튼
         let delBtn = $(".delBtn")   // 모달 댓글창안의 삭제 버튼
         let closeBtn = $(".closeBtn")  // 모달 댓글창안의 닫기 버튼
         let actionBtn = $(".actionBtn") // 모달창 안의 기능 담당 버튼의 총칭
+        let replyAddBtn = $(".replyAddBtn") // 댓글창 더 보기 버튼임
+
         let replyDTO = {
             rno : "",
             ino : "",
@@ -158,14 +164,46 @@
                 replyDTO.replyContent = replyText.val();
 
                 replySave(replyDTO);
-            })
 
+            })
+            // 댓글 목록을 클릭하면 모달창이 띄워지고
+            // read() 함수를 적용하여 누른 댓글의 rno 값으로
+            // 쓰여진 내용을 불러옴
+            // todo:댓글 쓴 유저가 아니라면 수정, 삭제가 불가능하게 할 예정
             replygroup.on("click", "li" ,function () {
                 $(".modal").modal("show")
 
+
+
                 replyTxt.text("댓글 수정")
+                read($(this).data("num"));
+                rno = $(this).data("num")
 
 
+            })
+            // 모달창의 수정 버튼을 누르면
+            //
+            modifyBtn.on("click", function () {
+                console.log($(this).val())
+
+                replyDTO.ino = ino;
+                replyDTO.replyContent = replyTxt.val();
+                replyDTO.rno =rno;
+                console.log(replyDTO)
+                update(replyDTO);
+
+                $(".modal").modal("hide")
+            })
+
+            delBtn.on("click", function () {
+                console.log($(this).val())
+                del(rno)
+                $(".modal").modal("hide")
+
+            })
+
+            replyAddBtn.on("click", function () {
+                replyListajax(ino, page, listhtmlsAdd);
             })
 
             //함수
@@ -178,6 +216,7 @@
                     type : "post",
                     success : function (result) {
                         alert(result)   // 성공후 또는 실패 메시지
+                        replyListajax(ino, page, listhtmls);
                     },
                     error : function (error) {
                         console.log(error)
@@ -194,8 +233,26 @@
                 for (let i = 0; i <result.dtoList.length ; i++){
                     console.log(result.dtoList[i].memberDTO)
 
-                    str += `<li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
+                    str += `<li data-num="${result.dtoList[i].rno}" class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto" >
+                <div class="fw-bold">${result.dtoList[i].memberDTO.userID}</div>
+                ${result.dtoList[i].replyContent}
+            </div>
+            <span class="badge text-bg-primary rounded-pill">14</span>
+                           </li>`;
+                }
+                replygroup.html(str)
+
+            }
+
+            function listhtmlsAdd(result) {
+                console.log(result)
+                let str = "";
+                for (let i = 0; i <result.dtoList.length ; i++){
+                    console.log(result.dtoList[i].memberDTO)
+
+                    str += `<li data-num="${result.dtoList[i].rno}" class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto" >
                 <div class="fw-bold">${result.dtoList[i].memberDTO.userID}</div>
                 ${result.dtoList[i].replyContent}
             </div>
@@ -203,6 +260,7 @@
                            </li>`;
                 }
                 replygroup.append(str)
+
             }
 
             replyListajax(ino, 1, listhtmls);
@@ -224,6 +282,58 @@
 
                     }
                 })
+            }
+            //댓글 읽기 1개만
+            function read(rno) {
+                console.log("받은 rno" + rno)
+                $.ajax({
+                    url : "/reply/read/" + rno,
+                    success : function (result) {
+                        console.log(result)
+                        replyTxt.val(result.replyContent)
+                    },
+                    error : function (error) {
+                        console.log(error)
+                    }
+                })
+            }
+                // 댓글 수정 함수
+            function update(replyDTO){
+
+                $.ajax({
+                    url : "/reply/update",
+                    data : replyDTO,
+                    type: "post",
+                    success :function (result) {
+                        alert(result)
+                        replyListajax(ino, 1, listhtmls);
+                    },
+                    error : function (error) {
+
+                    }
+                })
+            }
+
+            function del(rno) {
+                console.log("받은 rno" + rno)
+                $.ajax({
+                    url : "/reply/delete/"+rno,
+                    data : rno,
+                    type : "post",
+                    success : function (result) {
+                        console.log(result)
+                        alert(result)
+                        replyListajax(ino, 1, listhtmls);
+                    },
+                    error : function (error) {
+                        alert(error)
+                        console.log(error)
+                    }
+                })
+            }
+            //항상 목록 보여주는 아이
+            function showList() {
+                replyListajax(ino, 1, listhtmls);
             }
 
         })

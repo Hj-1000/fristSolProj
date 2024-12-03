@@ -9,6 +9,7 @@ import com.example.myfirstsolproj.repository.ItemRepository;
 import com.example.myfirstsolproj.repository.MemberRepository;
 import com.example.myfirstsolproj.repository.ReplyRepository;
 
+import groovy.transform.Undefined;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -117,11 +118,38 @@ public class ReplyServiceImpl implements ReplyService{
 
     @Override
     public ReplyDTO replyUpdate(ReplyDTO replyDTO) {
-        return null;
+        log.info("컨트롤러로 들어온 replyDTO" + replyDTO);
+
+
+
+        Reply reply =
+        replyRepository.findById(replyDTO.getRno()).orElseThrow(EntityNotFoundException::new);
+        // 댓글을 적은 사람만 댓글을 수정할 수 있다.
+//        if (replyDTO.getMemberDTO().getUserID() != reply.getMember().getUserID()){
+//
+//        }
+
+        //수정할 데이터를 수정한다. // 댓글 내용만 수정
+        reply.setReplyContent(replyDTO.getReplyContent());
+
+
+        //업데이트를 수행함
+        // 수정한 뒤에 reply를 replyDTO로 변환해서 반환해야 하지만...
+        // return modelMampper.map(reply, ReplyDTO.class) 이렇게 해도 되고
+
+        // 이렇게 해도 되고
+        replyDTO =
+        modelMapper.map(reply, ReplyDTO.class);
+
+
+        return replyDTO;
     }
 
     @Override
     public void replyDel(Long rno) {
 
+        log.info("삭제할 댓글 pk : " + rno);
+
+        replyRepository.deleteById(rno);
     }
 }

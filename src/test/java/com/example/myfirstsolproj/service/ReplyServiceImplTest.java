@@ -17,7 +17,22 @@ import static org.junit.jupiter.api.Assertions.*;
 class ReplyServiceImplTest {
 
     @Autowired
-    ReplyService replyService;
+    private ReplyService replyService;
+
+    @Test
+    public void replyupdateTest(){
+
+        ReplyDTO replyDTO = new ReplyDTO();
+        replyDTO.setRno(1L);
+        replyDTO.setReplyContent("수정할거임ㅋㅋ");
+
+        ReplyDTO replyDTO1 =
+        replyService.replyUpdate(replyDTO);
+
+        log.info(replyDTO1);
+
+
+    }
 
 
 
