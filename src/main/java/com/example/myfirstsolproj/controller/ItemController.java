@@ -74,13 +74,14 @@ public class ItemController {
 
     //내가 쓴 글
     @GetMapping("/admin/item/read")
-    public String read(Long ino, Model model, RedirectAttributes redirectAttributes){
+    public String read(Long ino, Model model, RedirectAttributes redirectAttributes, Principal principal){
 
         try {
             ItemDTO itemDTO =
                     itemService.itemRead(ino);
 
             model.addAttribute("itemDTO", itemDTO);
+            model.addAttribute("principal", principal.getName());
 
             return "item/read";
         }catch (EntityNotFoundException e){

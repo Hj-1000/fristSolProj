@@ -4,6 +4,12 @@ html {
     margin: 0;
 
 }
+.btn-disappear{
+    display: none;
+}
+.btn-appear{
+    display: block;
+}
 
 body{
     min-height: 100%;

@@ -81,8 +81,12 @@ public class RestReplyController {
     @GetMapping("/read/{rno}")
     public ResponseEntity read(@PathVariable("rno") Long rno){
 
+
+
         log.info("컨트롤러로 불러온 댓글 번호 : " + rno);
         ReplyDTO replyDTO =replyService.replyRead(rno);
+
+        log.info("컨트롤러로 들어온 댓글 모든 정보" + replyDTO);
 
         return new ResponseEntity<ReplyDTO>(replyDTO, HttpStatus.OK);
     }

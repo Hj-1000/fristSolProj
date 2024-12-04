@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Long> , ItemSearch {
 
+
     public List<Item> findByItemNm(String itemNm);
 
     // select i from Item i where i.ino == i.member.id 인거

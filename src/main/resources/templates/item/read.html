@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}"
 >
@@ -93,13 +94,7 @@
 
      <!--댓글 목록-->
     <ol class="list-group list-group-numbered replygroup">
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-                <div class="fw-bold">Subheading</div>
-                Content for list item
-            </div>
-            <span class="badge text-bg-primary rounded-pill">14</span>
-        </li>
+
     </ol>
     <button class="btn replyAddBtn">더보기</button>
 
@@ -129,6 +124,8 @@
     <script th:inline="javascript">
         let ino = [[${itemDTO.ino}]]
         let rno = $(this).data("num")
+        let login = [[${#authentication.name}]]
+        let page = 1;  // 페이지 번호 초기화
 
         let replyRegisterBtn = $(".replyRegisterBtn") // 댓글등록 버튼
         let replygroup = $(".replygroup") // 댓글 목록
@@ -144,6 +141,7 @@
         let replyDTO = {
             rno : "",
             ino : "",
+            mno : "",
             replyContent : ""
         }
 
@@ -170,19 +168,19 @@
             // read() 함수를 적용하여 누른 댓글의 rno 값으로
             // 쓰여진 내용을 불러옴
             // todo:댓글 쓴 유저가 아니라면 수정, 삭제가 불가능하게 할 예정
-            replygroup.on("click", "li" ,function () {
-                $(".modal").modal("show")
+            replygroup.on("click", "li", function () {
+                // li 요소의 data-username 값과 login 값 비교
+                if ($(this).data("username") === login) {
+                    $(".modal").modal("show");
+                    replyTxt.text("댓글 수정");
+                    rno = $(this).data("num");
+                    read(rno); // 수정하려는 댓글 내용을 불러옴
 
 
-
-                replyTxt.text("댓글 수정")
-                read($(this).data("num"));
-                rno = $(this).data("num")
-
-
-            })
+                }
+            });
             // 모달창의 수정 버튼을 누르면
-            //
+
             modifyBtn.on("click", function () {
                 console.log($(this).val())
 
@@ -191,6 +189,8 @@
                 replyDTO.rno =rno;
                 console.log(replyDTO)
                 update(replyDTO);
+
+
 
                 $(".modal").modal("hide")
             })
@@ -203,8 +203,9 @@
             })
 
             replyAddBtn.on("click", function () {
-                replyListajax(ino, page, listhtmlsAdd);
-            })
+                page++;  // 페이지 번호 증가
+                replyListajax(ino, page, listhtmlsAdd); // 새 페이지의 댓글 불러오기
+            });
 
             //함수
             // 댓글 등록 함수
@@ -216,7 +217,7 @@
                     type : "post",
                     success : function (result) {
                         alert(result)   // 성공후 또는 실패 메시지
-                        replyListajax(ino, page, listhtmls);
+                        replyListajax(ino, 1, listhtmls);
                     },
                     error : function (error) {
                         console.log(error)
@@ -233,7 +234,7 @@
                 for (let i = 0; i <result.dtoList.length ; i++){
                     console.log(result.dtoList[i].memberDTO)
 
-                    str += `<li data-num="${result.dtoList[i].rno}" class="list-group-item d-flex justify-content-between align-items-start">
+                    str += `<li data-num="${result.dtoList[i].rno}" data-username="${result.dtoList[i].memberDTO.userID}" class="list-group-item d-flex justify-content-between align-items-start">
             <div class="ms-2 me-auto" >
                 <div class="fw-bold">${result.dtoList[i].memberDTO.userID}</div>
                 ${result.dtoList[i].replyContent}
@@ -248,40 +249,38 @@
             function listhtmlsAdd(result) {
                 console.log(result)
                 let str = "";
-                for (let i = 0; i <result.dtoList.length ; i++){
+                for (let i = 0; i < result.dtoList.length; i++) {
                     console.log(result.dtoList[i].memberDTO)
 
                     str += `<li data-num="${result.dtoList[i].rno}" class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto" >
-                <div class="fw-bold">${result.dtoList[i].memberDTO.userID}</div>
-                ${result.dtoList[i].replyContent}
-            </div>
-            <span class="badge text-bg-primary rounded-pill">14</span>
-                           </li>`;
+                        <div class="ms-2 me-auto" >
+                            <div class="fw-bold">${result.dtoList[i].memberDTO.userID}</div>
+                            ${result.dtoList[i].replyContent}
+                        </div>
+                        <span class="badge text-bg-primary rounded-pill">14</span>
+                    </li>`;
                 }
-                replygroup.append(str)
-
+                replygroup.append(str);  // 새로운 댓글 추가
             }
 
-            replyListajax(ino, 1, listhtmls);
+            replyListajax(ino, page, listhtmls);
 
             // 댓글 목록 함수 ajax로 준비먼저 나중에 목록 불러오기 함수에 쓸거임
             function replyListajax(ino, pageNum, callback) {
-                console.log("받은 ino" + ino)
-                console.log("받은 page" + pageNum)
+                console.log("받은 ino: " + ino);
+                console.log("받은 페이지 번호: " + pageNum);
 
                 $.ajax({
-                    url: "/reply/list" ,
-                    data: {ino : ino, page : pageNum},
-                    success :function(data){
-                        callback(data)
-                        page = data.page;
-
+                    url: "/reply/list",
+                    data: { ino: ino, page: pageNum },
+                    success: function (data) {
+                        callback(data);  // 댓글 목록을 처리할 콜백 함수 실행
+                        page = data.page;  // 페이지 업데이트
                     },
-                    error : function (error) {
-
+                    error: function (error) {
+                        console.log(error);
                     }
-                })
+                });
             }
             //댓글 읽기 1개만
             function read(rno) {
@@ -331,10 +330,7 @@
                     }
                 })
             }
-            //항상 목록 보여주는 아이
-            function showList() {
-                replyListajax(ino, 1, listhtmls);
-            }
+
 
         })
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -11,7 +12,8 @@
         <div class="header-container">
             <!-- 로그인/회원가입 버튼 -->
             <div class="login-signup">
-                <button class="login-btn">로그인</button>
+                <button class="login-btn" sec:authorize="isAnonymous()">로그인</button>
+                <button class="login-btn" sec:authorize="isAuthenticated()">로그아웃</button>
                 <button class="signup-btn">회원가입</button>
             </div>
         </div>

@@ -8,6 +8,7 @@ import com.example.myfirstsolproj.entity.Item;
 import com.example.myfirstsolproj.entity.Member;
 import com.example.myfirstsolproj.repository.ItemRepository;
 import com.example.myfirstsolproj.repository.MemberRepository;
+import com.example.myfirstsolproj.repository.ReplyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService{
     private final ItemRepository itemRepository;
+    private final ReplyRepository replyRepository;
     private final MemberRepository memberRepository;
     private final ModelMapper modelMapper;
 
@@ -132,6 +132,8 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public void itemDel(Long ino) {
         log.info("서비스로 들어온 삭제할 아이템 번호" + ino);
+
+        replyRepository.deleteByItemIno(ino);
         itemRepository.deleteById(ino);
 
     }
