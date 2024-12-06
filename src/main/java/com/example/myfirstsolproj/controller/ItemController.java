@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 import java.security.Principal;
 
 
@@ -40,6 +41,7 @@ public class ItemController {
         model.addAttribute("itemDTO", new ItemDTO());
         return "item/register";
     }
+
     @PostMapping("/admin/item/register")
     public String itemRegisterPost(@Valid ItemDTO itemDTO, BindingResult bindingResult, Model model, Principal principal){
         log.info("들어오는 값 확인 " + itemDTO);
@@ -72,6 +74,7 @@ public class ItemController {
         }
     }
 
+
     //내가 쓴 글
     @GetMapping("/admin/item/read")
     public String read(Long ino, Model model, RedirectAttributes redirectAttributes, Principal principal){
@@ -88,6 +91,8 @@ public class ItemController {
             redirectAttributes.addFlashAttribute("msg", "존재하지 않는 상품입니다.");
             return "redirect:/admin/item/list";
         }
+
+
     }
 
     // 글쓴사람이 자기글만 볼 수 있는 리스트
